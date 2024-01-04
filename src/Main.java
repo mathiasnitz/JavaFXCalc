@@ -338,8 +338,7 @@ public class Main extends Application
         equals.setPrefWidth(80);
         equals.setOnAction(event ->
         {
-            Double zahl1;
-            Double zahl2;
+
             String eingabe1;
             String eingabe2;
 
@@ -420,7 +419,7 @@ public class Main extends Application
 
     public int checkHowManyNumbersAvailable()
     {
-        int numbersAvailable = 0;
+        int numbersAvailable;
 
         if(cacheInputNumber.size() == 2)
         {
@@ -443,7 +442,7 @@ public class Main extends Application
         String ergebnis = "";
         double zahl1 = Double.parseDouble(eingabe1);
         double zahl2 = Double.parseDouble(eingabe2);
-        double doubleErgebnis = 0;
+        double doubleErgebnis;
 
         // Checken welcher Operator betätigt wurde
 
@@ -509,8 +508,6 @@ public class Main extends Application
     public String executeNegation(String eingabe1)
     {
         String ergebnis = "0";
-        double zahl1 = Double.parseDouble(eingabe1);
-        double doubleErgebnis;
 
         if(eingabe1.contains("-"))
         {
