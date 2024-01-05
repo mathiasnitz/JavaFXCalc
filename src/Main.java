@@ -145,9 +145,10 @@ public class Main extends Application
         seven.setPrefWidth(80);
         seven.setOnAction(event ->
         {
-            cacheInputNumber.add("7");
+            displayString += seven.getText();
             changeDisplayChar("7");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button eight = new Button();
@@ -158,9 +159,10 @@ public class Main extends Application
         eight.setPrefWidth(80);
         eight.setOnAction(event ->
         {
-            cacheInputNumber.add("8");
+            displayString += eight.getText();
             changeDisplayChar("8");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button nine = new Button();
@@ -171,9 +173,11 @@ public class Main extends Application
         nine.setPrefWidth(80);
         nine.setOnAction(event ->
         {
-            cacheInputNumber.add("9");
             changeDisplayChar("9");
+            System.out.println("ergebnisString nach changeDisplayChar: " + ergebnisString);
             display.setText(ergebnisString);
+            checkNumberRightNow(ergebnisString);
+
         });
 
         Button multiply = new Button();
@@ -184,8 +188,12 @@ public class Main extends Application
         multiply.setPrefWidth(80);
         multiply.setOnAction(event ->
         {
+            display.setText(cacheInputNumber.get(0) + " * ");
+            ergebnisString = cacheInputNumber.get(0) + " * ";
+            displayString += " " + multiply.getText() + " ";
             cacheInputOperation.clear();
             cacheInputOperation.add("Multiplikation");
+            ergebnisString = "0";
         });
 
 
@@ -197,9 +205,11 @@ public class Main extends Application
         four.setPrefWidth(80);
         four.setOnAction(event ->
         {
-            cacheInputNumber.add("4");
             changeDisplayChar("4");
+            System.out.println("ergebnisString nach changeDisplayChar: " + ergebnisString);
             display.setText(ergebnisString);
+            checkNumberRightNow(ergebnisString);
+
         });
 
 
@@ -288,8 +298,13 @@ public class Main extends Application
         plus.setPrefWidth(80);
         plus.setOnAction(event ->
         {
+
+            display.setText(cacheInputNumber.get(0) + " + ");
+            ergebnisString = cacheInputNumber.get(0) + " + ";
+            displayString += " " + plus.getText() + " ";
             cacheInputOperation.clear();
             cacheInputOperation.add("Addition");
+            ergebnisString = "0";
         });
 
         Button negate = new Button();
@@ -342,18 +357,22 @@ public class Main extends Application
             String eingabe1;
             String eingabe2;
 
+
+
+            System.out.println("Erste Zahl im Array: " + cacheInputNumber.get(0));
+            System.out.println("Zweite Zahl im Array: " + cacheInputNumber.get(1));
+
             if(cacheInputOperation.get(0).equals("Quadrat") || cacheInputOperation.get(0).equals("-"))
             {
                 executeOperation(cacheInputNumber.get(0), cacheInputOperation.get(0));
             }
             else
             {
-                switch(checkHowManyNumbersAvailable())
+                int i = checkHowManyNumbersAvailable();
+                switch(i)
                 {
                     case 2:
-                        eingabe1 = cacheInputNumber.get(0);
-                        eingabe2 = cacheInputNumber.get(1);
-                        executeOperation(eingabe1, eingabe2, cacheInputOperation.get(0));
+                        executeOperation(cacheInputNumber.get(0), cacheInputNumber.get(1), cacheInputOperation.get(0));
                         System.out.println("Zwei Zahlen eingegeben");
                         break;
                     case 1:
@@ -363,24 +382,28 @@ public class Main extends Application
                         }
                         else
                         {
-                            eingabe1 = "0.0";
+                            eingabe1 = "0";
                         }
                         eingabe2 = cacheInputNumber.get(0);
                         executeOperation(eingabe1, eingabe2, cacheInputOperation.get(0));
                         System.out.println("Eine Zahl eingegeben");
                         break;
                     case 0:
-                        eingabe1 = "0.0";
-                        eingabe2 = "0.0";
+                        eingabe1 = "0";
+                        eingabe2 = "0";
                         executeOperation(eingabe1, eingabe2, cacheInputOperation.get(0));
                         System.out.println("Keine Zahl eingegeben");
                         break;
                 }
             }
-            display.setText(cacheResults.get(0));
+            displayString += " " + equals.getText();
+            displayString += " " + cacheResults.get(0);
+            display.setText(displayString);
             cacheResults.clear();
             cacheInputOperation.clear();
             cacheInputNumber.clear();
+            ergebnisString = "0";
+            displayString = "";
 
         });
 
@@ -409,37 +432,66 @@ public class Main extends Application
 
     public void changeDisplayChar(String eingabe)
     {
-        ergebnisString = eingabe;
+        if (ergebnisString.equals("0"))
+        {
+            ergebnisString = eingabe; // Direkt den eingabe-String zuweisen, wenn ergebnisString "0" ist
+        }
+        else
+        {
+            ergebnisString += eingabe;
+        }
     }
 
-    public void lastResultDisplay()
+    public void checkNumberRightNow(String geklickteZahl)
     {
+        if(cacheInputNumber.size() == 0)
+        {
+            cacheInputNumber.add(0, "0");
+        }
+        else if (cacheInputNumber.size() == 1)
+        {
+            cacheInputNumber.add(1, geklickteZahl);
+        }
 
+        if(cacheInputOperation.size() == 0)
+        {
+            cacheInputNumber.set(0, geklickteZahl);
+            System.out.println(geklickteZahl + " wurde dem Array hinzugefügt.");
+            System.out.println("Zahl im Array: " + cacheInputNumber.get(0));
+        }
+        else
+        {
+            cacheInputNumber.set(1, geklickteZahl);
+            System.out.println("Zweite Zahl im Array: " + cacheInputNumber.get(1));
+        }
     }
 
     public int checkHowManyNumbersAvailable()
     {
-        int numbersAvailable;
+        int numbersAvailable = 0;
+
+        System.out.println(cacheInputNumber);
 
         if(cacheInputNumber.size() == 2)
         {
             numbersAvailable = 2;
         }
-        else if (cacheInputNumber.size() == 1)
+        else if (cacheInputNumber.size() < 2)
         {
             numbersAvailable = 1;
         }
-        else
+        else if (cacheInputNumber.size() == 0)
         {
             numbersAvailable = 0;
         }
 
+        System.out.println("Numbers available: " + numbersAvailable);
         return numbersAvailable;
     }
 
     public String executeOperation(String eingabe1, String eingabe2, String operation)
     {
-        String ergebnis = "";
+        String ergebnis = "0";
         double zahl1 = Double.parseDouble(eingabe1);
         double zahl2 = Double.parseDouble(eingabe2);
         double doubleErgebnis;
@@ -475,6 +527,8 @@ public class Main extends Application
                 cacheResults.add(ergebnis);
                 break;
             case "Addition":
+                System.out.println("Berechnung Zahl1: " + zahl1);
+                System.out.println("Berechnung Zahl2: " + zahl2);
                 doubleErgebnis = zahl1 + zahl2;
                 ergebnis = Double.toString(doubleErgebnis);
                 cacheResults.add(ergebnis);
@@ -536,7 +590,9 @@ public class Main extends Application
     }
 
     public static String ergebnisString = "0";
-    public static ArrayList<String> cacheInputNumber = new ArrayList<>();
+    public static String displayString = "";
+    public static ArrayList<String> cacheInputNumber = new ArrayList<>(2);
     public static ArrayList<String> cacheInputOperation = new ArrayList<>();
     public static ArrayList<String> cacheResults = new ArrayList<>();
+
 }
