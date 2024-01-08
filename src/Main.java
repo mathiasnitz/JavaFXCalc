@@ -47,7 +47,12 @@ public class Main extends Application
         prozent.setOnAction(event ->
         {
             cacheInputOperation.clear();
+            display.setText(cacheInputNumber.get(0) + "%");
+            ergebnisString = cacheInputNumber.get(0) + "%";
+            displayString += "" + prozent.getText() + " ";
+            cacheInputOperation.clear();
             cacheInputOperation.add("Prozent");
+            ergebnisString = "0";
         });
 
         Button wurzel = new Button();
@@ -63,15 +68,19 @@ public class Main extends Application
         });
 
         Button quadrat = new Button();
-        quadrat.setText("x²");
+        quadrat.setText("²");
         GridPane.setRowIndex(quadrat, 0);
         GridPane.setColumnIndex(quadrat, 2);
         quadrat.setPrefHeight(80);
         quadrat.setPrefWidth(80);
         quadrat.setOnAction(event ->
         {
+            display.setText(cacheInputNumber.get(0) + "²");
+            ergebnisString = cacheInputNumber.get(0) + "²";
+            displayString += "" + quadrat.getText() + "";
             cacheInputOperation.clear();
             cacheInputOperation.add("Quadrat");
+            ergebnisString = "0";
         });
 
         Button einsdurchx = new Button();
@@ -126,15 +135,19 @@ public class Main extends Application
         });
 
         Button divide = new Button();
-        divide.setText("⅓");
+        divide.setText("/");
         GridPane.setRowIndex(divide, 1);
         GridPane.setColumnIndex(divide, 3);
         divide.setPrefHeight(80);
         divide.setPrefWidth(80);
         divide.setOnAction(event ->
         {
+            display.setText(cacheInputNumber.get(0) + " / ");
+            ergebnisString = cacheInputNumber.get(0) + " / ";
+            displayString += " " + divide.getText() + " ";
             cacheInputOperation.clear();
             cacheInputOperation.add("Division");
+            ergebnisString = "0";
         });
 
         Button seven = new Button();
@@ -173,9 +186,9 @@ public class Main extends Application
         nine.setPrefWidth(80);
         nine.setOnAction(event ->
         {
+            displayString += nine.getText();
             changeDisplayChar("9");
-            System.out.println("ergebnisString nach changeDisplayChar: " + ergebnisString);
-            display.setText(ergebnisString);
+            display.setText(displayString);
             checkNumberRightNow(ergebnisString);
 
         });
@@ -205,9 +218,9 @@ public class Main extends Application
         four.setPrefWidth(80);
         four.setOnAction(event ->
         {
+            displayString += four.getText();
             changeDisplayChar("4");
-            System.out.println("ergebnisString nach changeDisplayChar: " + ergebnisString);
-            display.setText(ergebnisString);
+            display.setText(displayString);
             checkNumberRightNow(ergebnisString);
 
         });
@@ -221,9 +234,10 @@ public class Main extends Application
         five.setPrefWidth(80);
         five.setOnAction(event ->
         {
-            cacheInputNumber.add("5");
+            displayString += five.getText();
             changeDisplayChar("5");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button six = new Button();
@@ -234,9 +248,11 @@ public class Main extends Application
         six.setPrefWidth(80);
         six.setOnAction(event ->
         {
-            cacheInputNumber.add("6");
+
+            displayString += six.getText();
             changeDisplayChar("6");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button minus = new Button();
@@ -247,8 +263,12 @@ public class Main extends Application
         minus.setPrefWidth(80);
         minus.setOnAction(event ->
         {
+            display.setText(cacheInputNumber.get(0) + " - ");
+            ergebnisString = cacheInputNumber.get(0) + " - ";
+            displayString += " " + minus.getText() + " ";
             cacheInputOperation.clear();
             cacheInputOperation.add("Minus");
+            ergebnisString = "0";
         });
 
         Button one = new Button();
@@ -259,9 +279,10 @@ public class Main extends Application
         one.setPrefWidth(80);
         one.setOnAction(event ->
         {
-            cacheInputNumber.add("1");
+            displayString += one.getText();
             changeDisplayChar("1");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button two = new Button();
@@ -272,9 +293,10 @@ public class Main extends Application
         two.setPrefWidth(80);
         two.setOnAction(event ->
         {
-            cacheInputNumber.add("2");
+            displayString += two.getText();
             changeDisplayChar("2");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button three = new Button();
@@ -285,9 +307,10 @@ public class Main extends Application
         three.setPrefWidth(80);
         three.setOnAction(event ->
         {
-            cacheInputNumber.add("3");
+            displayString += three.getText();
             changeDisplayChar("3");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button plus = new Button();
@@ -298,7 +321,6 @@ public class Main extends Application
         plus.setPrefWidth(80);
         plus.setOnAction(event ->
         {
-
             display.setText(cacheInputNumber.get(0) + " + ");
             ergebnisString = cacheInputNumber.get(0) + " + ";
             displayString += " " + plus.getText() + " ";
@@ -328,9 +350,10 @@ public class Main extends Application
         zero.setPrefWidth(80);
         zero.setOnAction(event ->
         {
-            cacheInputNumber.add("0");
+            displayString += zero.getText();
             changeDisplayChar("0");
-            display.setText(ergebnisString);
+            display.setText(displayString);
+            checkNumberRightNow(ergebnisString);
         });
 
         Button punctuation = new Button();
@@ -582,6 +605,17 @@ public class Main extends Application
             System.out.println("Nichts vorher eingegeben");
         }
         return ergebnis;
+    }
+
+    public String clickCounter(String numberClicked)
+    {
+        int numberClickedInt = Integer.parseInt(numberClicked);
+        int clicksCounted = 0;
+        clicksCounted++;
+        System.out.println(clicksCounted);
+        String clicksCountedString = Integer.toString(clicksCounted);
+        System.out.println(clicksCountedString.repeat(clicksCounted));
+        return clicksCountedString.repeat(clicksCounted);
     }
 
     public static void main(String[] args)
